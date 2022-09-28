@@ -1,0 +1,132 @@
+import:
+    - 'techs.yaml'
+    - 'locations.yaml'
+
+model:
+    name: 6-region model
+    calliope_version: 0.6.7
+    timeseries_data_path: ''
+
+run:
+    # minimise sum of monetary install and generation costs -- no emissions in objective function
+    objective_options.cost_class.monetary: 1
+    solver: cbc  # `gurobi` is faster but requires a license
+    zero_threshold: 1e-10  # round any value smaller to 0
+
+overrides:
+    plan:
+    # optimise capacities
+        run.mode: plan
+        # finish time series with same storage as at beginning
+        run.cyclic_storage: False  # True leads to bugs with inter-intraday storage decomposition
+    continuous:
+    # continuous baseload capacity
+        techs.baseload_region1.constraints.energy_cap_max: inf
+        techs.baseload_region3.constraints.energy_cap_max: inf
+        techs.baseload_region6.constraints.energy_cap_max: inf
+    integer:
+    # baseload capacity in units of 3GW
+        techs.baseload_region1.constraints.units_max: inf
+        techs.baseload_region1.constraints.energy_cap_per_unit: 3
+        techs.baseload_region3.constraints.units_max: inf
+        techs.baseload_region3.constraints.energy_cap_per_unit: 3
+        techs.baseload_region6.constraints.units_max: inf
+        techs.baseload_region6.constraints.energy_cap_per_unit: 3
+    allow_unmet:
+    # plan mode only -- unmet always allowed in operate mode
+        techs.unmet_region2.costs.monetary.energy_cap: 0
+        techs.unmet_region4.costs.monetary.energy_cap: 0
+        techs.unmet_region5.costs.monetary.energy_cap: 0
+    operate:
+    # fixed capacities, optimise operation only
+        run:
+            mode: operate
+            cyclic_storage: False
+            operation:
+                horizon: 8784  # hours
+                window: 4392  # hours
+        techs:
+            # cyclic storage doesn't work in operate mode since we solve problems in horizons and
+            # windows -- so start with 0 storage and finish with 0 storage for energy conservation
+            storage_region2.constraints.storage_initial: 0
+            storage_region5.constraints.storage_initial: 0
+            storage_region6.constraints.storage_initial: 0
+        locations:
+            region1:
+                techs.baseload_region1.constraints.energy_cap_equals: 21
+                techs.peaking_region1.constraints.energy_cap_equals: 31
+            region2:
+                techs.wind_region2.constraints.resource_area_equals: 32
+                # techs.solar_region2.constraints.resource_area_equals: 32
+                techs.storage_region2.constraints.storage_cap_equals: 52
+                techs.storage_region2.constraints.energy_cap_equals: 100
+                techs.unmet_region2.constraints.energy_cap_equals: 1e10
+            region3:
+                techs.baseload_region3.constraints.energy_cap_equals: 23
+                techs.peaking_region3.constraints.energy_cap_equals: 33
+            region4:
+                techs.unmet_region4.constraints.energy_cap_equals: 1e10
+            region5:
+                techs.wind_region5.constraints.resource_area_equals: 35
+                # techs.solar_region5.constraints.resource_area_equals: 35
+                techs.storage_region5.constraints.storage_cap_equals: 55
+                techs.storage_region5.constraints.energy_cap_equals: 100
+                techs.unmet_region5.constraints.energy_cap_equals: 1e10
+            region6:
+                techs.baseload_region6.constraints.energy_cap_equals: 26
+                techs.peaking_region6.constraints.energy_cap_equals: 36
+                techs.wind_region6.constraints.resource_area_equals: 36
+                # techs.solar_region6.constraints.resource_area_equals: 36
+                techs.storage_region6.constraints.storage_cap_equals: 55
+                techs.storage_region6.constraints.energy_cap_equals: 100
+        links:
+            region1,region2:
+                techs.transmission_region1_region2.constraints.energy_cap_equals: 12
+            region1,region5:
+                techs.transmission_region1_region5.constraints.energy_cap_equals: 15
+            region1,region6:
+                techs.transmission_region1_region6.constraints.energy_cap_equals: 16
+            region2,region3:
+                techs.transmission_region2_region3.constraints.energy_cap_equals: 23
+            region3,region4:
+                techs.transmission_region3_region4.constraints.energy_cap_equals: 34
+            region4,region5:
+                techs.transmission_region4_region5.constraints.energy_cap_equals: 45
+            region5,region6:
+                techs.transmission_region5_region6.constraints.energy_cap_equals: 56
+    ramping:
+        techs.baseload_region1.constraints.energy_ramping: 0.2  # frac/hr
+        techs.baseload_region3.constraints.energy_ramping: 0.2  # frac/hr
+        techs.baseload_region6.constraints.energy_ramping: 0.2  # frac/hr
+    gurobi:
+    # run with gurobi (faster commercial solver)
+        run.solver: gurobi
+    clustering:
+        model:
+            time:
+                function: apply_clustering
+                function_options:
+                    # cluster groups can be user-defined and specified as column 'cluster' in the
+                    # ts_data DataFrame. Set 'kmeans' or 'hierarchical' to have Calliope cluster.
+                    # 'clusters.csv' created in model initialisation, see '_create_init_time_series'
+                    # For 'how': 'mean' or 'closest' -- doesn't matter in our case since we do
+                    # aggregation *before* passing time series data to Calliope model
+                    clustering_func: file=clusters.csv:cluster # or 'kmeans' or 'hierarchical'
+                    how: 'mean'  # 'mean' or 'closest'
+                    scale_clusters: null  # do not rescale representative days after clustering
+                    # k: 1  # used when clustering_func!=file, can override via extra_override_dict
+    storage_none:
+        locations.region2.techs.storage_region2.constraints.storage_cap_equals: 0
+        locations.region2.techs.storage_region2.constraints.energy_cap_equals: 0
+        locations.region5.techs.storage_region5.constraints.storage_cap_equals: 0
+        locations.region5.techs.storage_region5.constraints.energy_cap_equals: 0
+        locations.region6.techs.storage_region6.constraints.storage_cap_equals: 0
+        locations.region6.techs.storage_region6.constraints.energy_cap_equals: 0
+    storage_high_cost:
+        techs.storage_region2.costs.monetary.storage_cap: 10  # GBP per KWh
+        techs.storage_region5.costs.monetary.storage_cap: 10  # GBP per KWh
+        techs.storage_region6.costs.monetary.storage_cap: 10  # GBP per KWh
+    storage_medium_cost:
+        techs.storage_region2.costs.monetary.storage_cap: 1  # GBP per KWh
+        techs.storage_region5.costs.monetary.storage_cap: 1  # GBP per KWh
+        techs.storage_region6.costs.monetary.storage_cap: 1  # GBP per KWh

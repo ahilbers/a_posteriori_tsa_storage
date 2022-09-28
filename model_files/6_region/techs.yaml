@@ -1,0 +1,336 @@
+# Notes:
+# - lifetimes used only in calculating cost - plants do not close after 1 yr
+
+techs:
+
+    # Demand
+    demand_power:
+        essentials:
+            carrier: power
+            name: demand
+            parent: demand
+
+
+    # Generation
+    baseload_region1:
+        essentials:
+            carrier_out: power
+            name: baseload_region1
+            parent: supply
+        constraints:
+            lifetime: 1
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 300.1  # GBP per KW
+                om_prod: 0.005001  # GBP per KWh
+            emissions:
+                om_prod: 200  # gCO2 per KWh
+    baseload_region3:
+        essentials:
+            carrier_out: power
+            name: baseload_region3
+            parent: supply
+        constraints:
+            lifetime: 1
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 300.3  # GBP per KW
+                om_prod: 0.005003  # GBP per KWh
+            emissions:
+                om_prod: 200  # gCO2 per KWh
+    baseload_region6:
+        essentials:
+            carrier_out: power
+            name: baseload_region6
+            parent: supply
+        constraints:
+            lifetime: 1
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 300.6  # GBP per KW
+                om_prod: 0.005006  # GBP per KWh
+            emissions:
+                om_prod: 200  # gCO2 per KWh
+    peaking_region1:
+        essentials:
+            carrier_out: power
+            name: baseload_region3
+            parent: supply
+        constraints:
+            lifetime: 1
+            energy_cap_max: inf
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 100.1  # GBP per KW
+                om_prod: 0.035001  # GBP per KWh
+            emissions:
+                om_prod: 400  # gCO2 per KWh
+    peaking_region3:
+        essentials:
+            carrier_out: power
+            name: baseload_region3
+            parent: supply
+        constraints:
+            lifetime: 1
+            energy_cap_max: inf
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 100.3  # GBP per KW
+                om_prod: 0.035003  # GBP per KWh
+            emissions:
+                om_prod: 400  # gCO2 per KWh
+    peaking_region6:
+        essentials:
+            carrier_out: power
+            name: peaking_region6
+            parent: supply
+        constraints:
+            lifetime: 1
+            energy_cap_max: inf
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 100.6  # GBP per KW
+                om_prod: 0.035006  # GBP per KWh
+            emissions:
+                om_prod: 400  # gCO2 per KWh
+    wind_region2:
+        essentials:
+            carrier_out: power
+            name: wind_region2
+            parent: supply
+        constraints:
+            lifetime: 1
+            energy_cap_max: inf
+            resource_unit: energy_per_area
+            resource_area_max: inf
+        costs:
+            monetary:
+                interest_rate: 0
+                resource_area: 100.2  # GBP per KW
+                om_prod: 0.000002  # GBP per KWh
+            emissions:
+                om_prod: 0  # gCO2 per KWh
+    wind_region5:
+        essentials:
+            carrier_out: power
+            name: wind_region5
+            parent: supply
+        constraints:
+            lifetime: 1
+            energy_cap_max: inf
+            resource_unit: energy_per_area
+            resource_area_max: inf
+        costs:
+            monetary:
+                interest_rate: 0
+                resource_area: 100.5  # GBP per KW
+                om_prod: 0.000005  # GBP per KWh
+            emissions:
+                om_prod: 0  # gCO2 per KWh
+    wind_region6:
+        essentials:
+            carrier_out: power
+            name: wind_region6
+            parent: supply
+        constraints:
+            lifetime: 1
+            energy_cap_max: inf
+            resource_unit: energy_per_area
+            resource_area_max: inf
+        costs:
+            monetary:
+                interest_rate: 0
+                resource_area: 100.6  # GBP per KW
+                om_prod: 0.000006  # GBP per KWh
+            emissions:
+                om_prod: 0  # gCO2 per KWh
+
+
+    # Transmission
+    transmission_region1_region2:
+        essentials:
+            carrier: power
+            name: transmission_region1_region2
+            parent: transmission
+        constraints:
+            lifetime: 1
+            energy_eff: 1.0
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 100.12  # GBP per KW
+    transmission_region1_region5:
+        essentials:
+            carrier: power
+            name: transmission_region1_region5
+            parent: transmission
+        constraints:
+            lifetime: 1
+            energy_eff: 1.0
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 150.15  # GBP per KW
+    transmission_region1_region6:
+        essentials:
+            carrier: power
+            name: transmission_region1_region6
+            parent: transmission
+        constraints:
+            lifetime: 1
+            energy_eff: 1.0
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 100.16  # GBP per KW
+    transmission_region2_region3:
+        essentials:
+            carrier: power
+            name: transmission_region2_region3
+            parent: transmission
+        constraints:
+            lifetime: 1
+            energy_eff: 1.0
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 100.23  # GBP per KW
+    transmission_region3_region4:
+        essentials:
+            carrier: power
+            name: transmission_region3_region4
+            parent: transmission
+        constraints:
+            lifetime: 1
+            energy_eff: 1.0
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 100.34  # GBP per KW
+    transmission_region4_region5:
+        essentials:
+            carrier: power
+            name: transmission_region4_region5
+            parent: transmission
+        constraints:
+            lifetime: 1
+            energy_eff: 1.0
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 100.45  # GBP per KW
+    transmission_region5_region6:
+        essentials:
+            carrier: power
+            name: transmission_region5_region6
+            parent: transmission
+        constraints:
+            lifetime: 1
+            energy_eff: 1.0
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 100.56  # GBP per KW
+
+    # Storage
+    storage_region2:
+        essentials:
+            carrier: power
+            name: storage_region2
+            parent: storage
+        constraints:
+            lifetime: 1
+            energy_cap_equals: 100  # Vary storage energy cap, keep power cap the same
+            energy_eff: 0.95002  # Square this number for round trip efficiency
+            storage_loss: 0.00001  # Fraction of energy charge lossed per hour
+            storage_initial: 0.  # Initial storage level, fraction of energy capacity
+            # storage_initial: value >0 cause bugs for inter-/intraday storage levels
+        costs:
+            monetary:
+                storage_cap: 10.002  # GBP per KWh
+                interest_rate: 0
+    storage_region5:
+        essentials:
+            carrier: power
+            name: storage_region5
+            parent: storage
+        constraints:
+            lifetime: 1
+            energy_cap_equals: 100  # Vary storage energy cap, keep power cap the same
+            energy_eff: 0.95005  # Square this number for round trip efficiency
+            storage_loss: 0.00001  # Fraction of energy charge lossed per hour
+            storage_initial: 0.  # Initial storage level, fraction of energy capacity
+            # storage_initial: value >0 cause bugs for inter-/intraday storage levels
+        costs:
+            monetary:
+                storage_cap: 10.005  # GBP per KWh
+                interest_rate: 0
+    storage_region6:
+        essentials:
+            carrier: power
+            name: storage_region6
+            parent: storage
+        constraints:
+            lifetime: 1
+            energy_cap_equals: 100  # Vary storage energy cap, keep power cap the same
+            energy_eff: 0.95006  # Square this number for round trip efficiency
+            storage_loss: 0.00001  # Fraction of energy charge lossed per hour
+            storage_initial: 0.  # Initial storage level, fraction of energy capacity
+            # storage_initial: value >0 cause bugs for inter-/intraday storage levels
+        costs:
+            monetary:
+                storage_cap: 10.006  # GBP per KWh
+                interest_rate: 0
+
+    # Unmet demand, considered as generation technology with no install but high generation cost
+    unmet_region2:
+        essentials:
+            carrier_out: power
+            name: unmet_region2
+            parent: supply
+        constraints:
+            lifetime: 1
+            energy_cap_max: inf
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 10000000002  # GBP per KW
+                om_prod: 6.000002  # GBP per KWh
+            emissions:
+                om_prod: 0  # gCO2 per KWh
+    unmet_region4:
+        essentials:
+            carrier_out: power
+            name: unmet_region4
+            parent: supply
+        constraints:
+            lifetime: 1
+            energy_cap_max: inf
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 10000000004  # GBP per KW
+                om_prod: 6.000004  # GBP per KWh
+            emissions:
+                om_prod: 0  # gCO2 per KWh
+    unmet_region5:
+        essentials:
+            carrier_out: power
+            name: unmet_region5
+            parent: supply
+        constraints:
+            lifetime: 1
+            energy_cap_max: inf
+        costs:
+            monetary:
+                interest_rate: 0
+                energy_cap: 10000000005  # GBP per KW
+                om_prod: 6.000005  # GBP per KWh
+            emissions:
+                om_prod: 0  # gCO2 per KWh
