@@ -36,7 +36,7 @@ def parse_args() -> argparse.Namespace:
         setattr(args, argument_name, converted_string)
 
     # Check for valid simulation type
-    valid_sim_types = ['get_design_estimate', 'evaluate_design_estimate', 'get_operate_variables']
+    valid_sim_types = ['get_design_estimate', 'get_operate_variables']
     if args.simulation_type not in valid_sim_types:
         raise ValueError(f'Simulation type `{args.simulation_type}` not in {valid_sim_types}.')
 
@@ -48,7 +48,7 @@ def parse_args() -> argparse.Namespace:
     return args
 
 
-def create_run_config(main_config: dict, replication: int) -> dict:
+def create_run_config(main_config: dict) -> dict:
     '''Combine settings into single run config.
 
     Config settings are updated in following order (last update has highest priority):
@@ -86,6 +86,7 @@ def create_run_config(main_config: dict, replication: int) -> dict:
     run_config['simulation']['type'] = cl_args.pop('simulation_type')
     run_config['simulation']['extra_config_name'] = cl_args.pop('extra_config_name')
     run_config['ts_base']['resample_num_years'] = cl_args.pop('ts_base_resample_num_years')
+    run_config['simulation']['replication'] = cl_args.pop('replication')
 
     # Add extra config and simulation config
     run_config = update_run_config(
@@ -112,17 +113,9 @@ def create_run_config(main_config: dict, replication: int) -> dict:
     else:
         agg_config['num_days_extreme'] = None
 
-    # If conducting a 'year' simulation of type 'get_design_estimate' slice into correct year.
-    # For evaluation runs, run across full time series (so no slicing here)
-    sim_config = run_config['simulation']
-    if sim_config['name'] == 'year' and sim_config['type'] == 'get_design_estimate':
-        year_to_slice_into = config.TS_MASTER_FIRST_YEAR + run_config['simulation']['replication']
-        run_config['ts_base']['time_slice'] = [str(year_to_slice_into), str(year_to_slice_into)]
-
     assert len(cl_args) == 0  # Ensure all command line arguments have been added to `run_config`
 
     # Add replication and simulation_id
-    run_config['simulation']['replication'] = replication
     simulation_id = data_engineering.get_simulation_id(run_config=run_config)
     run_config['simulation']['id'] = simulation_id
 
@@ -132,29 +125,10 @@ def create_run_config(main_config: dict, replication: int) -> dict:
 def main():
     '''Run the simulations'''
 
-    # Loop over replications here -- used for parallel array jobs
-    for replication in config.REPLICATIONS_SUPERSET:
-
-        # Run only if PRN matches replication -- used for parallel array jobs
-        if not (config.PRN == -1 or config.PRN == replication):
-            logger.debug(f'PRN: {config.PRN}, replication: {replication} -- no simulation.')
-            continue
-
-        # Create run config
-        run_config = create_run_config(main_config=config.main_run_config, replication=replication)
-
-        # If summary output already exists, stop simulation
-        simulation_id = run_config['simulation']['id']
-        summary_outputs_filepath = f'{config.SUMMARY_OUTPUTS_SAVE_DIR}/{simulation_id}.csv'
-        if config.RUN_ID != 'debug' and os.path.exists(summary_outputs_filepath):
-            logger.info(f'Summary output {summary_outputs_filepath} already exists. Stopping.')
-            logger.info('Done.\n\n')
-            return 0
-
-        # Here we go
-        logger.info(f'RUN_ID: {config.RUN_ID}, PRN: {config.PRN}, replication: {replication}.')
-        simulations.main(run_config=run_config)
-
+    run_config = create_run_config(main_config=config.main_run_config)
+    sim_id, replication = run_config['simulation']['id'], run_config['simulation']['replication']
+    logger.info(f'Simulation ID: {sim_id}, replication: {replication}.')
+    simulations.main(run_config=run_config)
     logger.info('Done.\n\n')
 
 

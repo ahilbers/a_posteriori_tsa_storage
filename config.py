@@ -1,19 +1,15 @@
 import os
 
 
-# Constants when run in parallel in compute clusters (HPC = high performace computing)
-# In HPC parallel run, PRN (parallel run number) is index corresponding to parallel run. Else set
-# PRN=0 and code is run in sequence. On laptop, environment variables are set in `main.sh`.
-if 'PBS_ARRAY_INDEX' in os.environ:
-    PRN = int(os.environ['PBS_ARRAY_INDEX']) - 1  # Offset by 1 to make ranges start at 0
-    RUN_ID = f'{os.environ["PBS_JOBNAME"]}_{PRN:03d}'
-else:
-    PRN = 0
-    RUN_ID = 'debug'
+# # Constants when run in parallel in compute clusters (HPC = high performace computing)
+# # In HPC parallel run, PRN (parallel run number) is index corresponding to parallel run. Else set
+# # PRN=0 and code is run in sequence. On laptop, environment variables are set in `main.sh`.
+# PRN = int(os.environ['PRN']) - 1  # Offset by 1 to make ranges start at 0
+# RUN_ID = f'{os.environ["PBS_JOBNAME"]}_{PRN:03d}'
+# REPLICATIONS_SUPERSET = range(0, 100)  # Should cover all iterations, most of these are not run
 
 
-TS_MASTER_FIRST_YEAR = 1980  # First year in master time series CSV (before any slicing/subsampling)
-REPLICATIONS_SUPERSET = range(0, 100)  # Should cover all iterations, most of these are not run
+TS_MASTER_FIRST_YEAR = 1980  # First year in master time series CSV (before any slicing/subsampling
 OUTPUTS_DIR = 'outputs'
 LOG_SAVE_DIR = f'{OUTPUTS_DIR}/logs'
 RUN_CONFIG_SAVE_DIR = f'{OUTPUTS_DIR}/configs'
@@ -39,6 +35,9 @@ COMMAND_LINE_ARGUMENTS = {
     },
     'ts_reduction_num_days': {
         'required': False, 'default': None, 'type': int
+    },
+    'replication': {
+        'required': True, 'default': None, 'type': int
     },
 }
 
@@ -86,19 +85,19 @@ main_run_config = {
             'columns_used': [
                 'demand_region2', 'demand_region4', 'demand_region5',
                 'wind_region2', 'wind_region5', 'wind_region6',
-            ],  # Sometimes modified to add storage levels also (see below)
+            ],  # Sometimes modified to add storage (dis)charge decisions also (see below)
             'normalize_method': 'z-transform',  # None, 'z-transform' or 'min-max'
         },
         'representative_day': 'closest'  # 'mean' or 'closest' (medoid)
     },
     'save': {
-        'log_filepath': f'{LOG_SAVE_DIR}/{RUN_ID}.log',
+        'log_filepath': f'{LOG_SAVE_DIR}/main.log',  # TODO: Change
         'log_level_file': 'INFO',  # Level for .log file
         'log_level_stdout': 'INFO',  # Level for stdout (including terminal)
         'save_run_config': True,
         'save_summary_outputs': True,
         'save_ts_outputs': False,  # Gets changed to True for 'get_operate_variables' simulations
-        'save_plot': (True if ('laptop' in RUN_ID or 'debug' in RUN_ID) else False),
+        'save_plot': False,
         'save_full_outputs': False,
         'plot_ts_slice': [3700, 4336],  # Index range to plot, .iloc format (e.g. [3700, 4336])
     }

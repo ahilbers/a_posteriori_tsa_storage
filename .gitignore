@@ -1,2 +1,6 @@
 .DS_Store
 *.DS_Store  # mac finder files
+model_files/6_region_*/**  # Temporary model generation files
+__pycache__/*
+*/__pycache__/*
+outputs/*
