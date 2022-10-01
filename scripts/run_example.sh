@@ -23,7 +23,7 @@ for SIMULATION_NAME in "${SIMULATION_NAME_LIST[@]}"
 do
     for SIMULATION_TYPE in "${SIMULATION_TYPE_LIST[@]}"
     do
-        for REPLICATION in {0..1}
+        for REPLICATION in {0..39}
         do
             python3 main.py \
                     --simulation_name $SIMULATION_NAME \
@@ -35,8 +35,5 @@ do
         done
     done
 done
-
-
-# sh move_data.sh collate  # Collate summary outputs into single file
 
 
