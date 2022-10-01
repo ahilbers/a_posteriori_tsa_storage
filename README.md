@@ -1,5 +1,3 @@
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
-
 # A posteriori time series aggregation for energy system planning models with storage
 
 
@@ -25,9 +23,11 @@ sh scripts/main.sh
 
 from a command line in the main directory (**not** in the `scripts/` directory). This, in turn,
 runs three scripts:
-- `main_validation.sh`: the *validation* experiment
-- `main_example.sh`: the *example* experiment
-- `make_figure.sh`: collate and clean the data, and create the figures. These appear in the directory `outputs/plots_post/`.
+- `run_validation.sh`: the *validation* experiment
+- `run_example.sh`: the *example* experiment
+- `make_figures.sh`: collate and clean the data, and create the figures. These appear in the directory `outputs/plots_post/`.
+
+In this repo, this code is structured to run all simulations in series. However, each of the 40 replications can also be run in parallel -- you can do this for your machine by running each `REPLICATION` separately (this variable appears in the `.sh` files).
 
 
 
