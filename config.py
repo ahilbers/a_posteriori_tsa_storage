@@ -101,6 +101,7 @@ main_run_config = {
 
 
 # Specify settings here that overwrite defauls
+benchmark = {}
 agg_inp_mean = {  # Method A
     'ts_aggregation': {
         'aggregate': True,
