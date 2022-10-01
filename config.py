@@ -27,9 +27,6 @@ COMMAND_LINE_ARGUMENTS = {
     'simulation_type': {
         'required': True, 'default': None, 'type': str
     },
-    'extra_config_name': {
-        'required': False, 'default': None, 'type': str
-    },
     'ts_base_resample_num_years': {
         'required': False, 'default': None, 'type': int
     },
@@ -49,7 +46,6 @@ main_run_config = {
         'name': None,
         'type': None,
         'id': None,
-        'extra_config_name': None,
         'replication': None,
     },
     'model': {
@@ -91,7 +87,7 @@ main_run_config = {
         'representative_day': 'closest'  # 'mean' or 'closest' (medoid)
     },
     'save': {
-        'log_filepath': f'{LOG_SAVE_DIR}/main.log',  # TODO: Change
+        'log_filepath': f'{LOG_SAVE_DIR}/main.log',
         'log_level_file': 'INFO',  # Level for .log file
         'log_level_stdout': 'INFO',  # Level for stdout (including terminal)
         'save_run_config': True,
@@ -104,46 +100,20 @@ main_run_config = {
 }
 
 
-# Extra config settings, specified via 'extra_config_name' command line argument
-main = {}  # No extra settings
-storage_none = {
-    'model': {
-        'extra_override_name': 'storage_none'
-    }
-}
-storage_high_cost = {
-    'model': {
-        'extra_override_name': 'storage_high_cost'
-    }
-}
-storage_medium_cost = {
-    'model': {
-        'extra_override_name': 'storage_medium_cost'
-    }
-}
-# TODO: Change to 'storage_low_cost' (everywhere)
-
-
-# Configs specific to particular simulation type, updates main_run_config when creating run_config.
-# Additional config parameters can be specified as command line arguments
-benchmark = {}
-year = {}
-
-
 # Specify settings here that overwrite defauls
-agg_inp_mean = {
+agg_inp_mean = {  # Method A
     'ts_aggregation': {
         'aggregate': True,
         'representative_day': 'mean'
     }
 }
-agg_inp_closest = {
+agg_inp_closest = {  # Method B
     'ts_aggregation': {
         'aggregate': True,
         'representative_day': 'closest'
     }
 }
-agg_inp_min_max = {
+agg_inp_min_max = {  # Method C
     'ts_aggregation': {
         'aggregate': True,
         'stratification': {
@@ -156,15 +126,7 @@ agg_inp_min_max = {
         }
     }
 }
-agg_str_gencost_inp = {
-    'ts_aggregation': {
-        'aggregate': True,
-        'stratification': {
-            'stratify': True
-        }
-    }
-}
-agg_str_unmet_inp = {
+agg_str_unmet_inp = {  # Method D
     'ts_aggregation': {
         'aggregate': True,
         'stratification': {
@@ -173,7 +135,15 @@ agg_str_unmet_inp = {
         }
     }
 }
-agg_str_gencost_op_vars = {
+agg_str_gencost_inp = {  # Method E
+    'ts_aggregation': {
+        'aggregate': True,
+        'stratification': {
+            'stratify': True
+        }
+    }
+}
+agg_str_gencost_op_vars = {  # Method F
     'ts_aggregation': {
         'aggregate': True,
         'stratification': {

@@ -40,11 +40,6 @@ def parse_args() -> argparse.Namespace:
     if args.simulation_type not in valid_sim_types:
         raise ValueError(f'Simulation type `{args.simulation_type}` not in {valid_sim_types}.')
 
-    # If extra_config is not specified, it corresponds to 'main' in 'config.py'
-    if args.extra_config_name is None:
-        logger.debug('Argument `extra_config_name` not specified, mapping to `main`.')
-        args.extra_config_name = 'main'
-
     return args
 
 
@@ -54,7 +49,6 @@ def create_run_config(main_config: dict) -> dict:
     Config settings are updated in following order (last update has highest priority):
     - main_run_config (in `config.py`)
     - command line arguments
-    - extra_config (in `config.py`)
     - simulation config (in `config.py`)
     '''
 
@@ -84,14 +78,10 @@ def create_run_config(main_config: dict) -> dict:
     cl_args = {i[0]: i[1] for i in parse_args()._get_kwargs()}  # Read in command line arguments
     run_config['simulation']['name'] = cl_args.pop('simulation_name')
     run_config['simulation']['type'] = cl_args.pop('simulation_type')
-    run_config['simulation']['extra_config_name'] = cl_args.pop('extra_config_name')
     run_config['ts_base']['resample_num_years'] = cl_args.pop('ts_base_resample_num_years')
     run_config['simulation']['replication'] = cl_args.pop('replication')
 
-    # Add extra config and simulation config
-    run_config = update_run_config(
-        run_config=run_config, run_config_update_name=run_config['simulation']['extra_config_name']
-    )
+    # Add simulation config
     run_config = update_run_config(
         run_config=run_config, run_config_update_name=run_config['simulation']['name']
     )

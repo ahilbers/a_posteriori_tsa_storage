@@ -7,15 +7,14 @@
 
 # Parameters
 # ----------
-EXTRA_CONFIG_NAME="storage_medium_cost"
-TS_BASE_RESAMPLE_NUM_YEARS=1
-TS_REDUCTION_NUM_DAYS=10
 SIMULATION_NAME_LIST=(
-    "agg_inp_mean"
-    # "agg_inp_closest"
-    # "agg_str_gencost_op_vars"
+    "agg_inp_mean"  # Method A
+    # "agg_inp_closest"  # Method B: (a priori) first stage of method F
+    # "agg_str_gencost_op_vars"  # Method F: (a posteriori) second stage
 )
 SIMULATION_TYPE_LIST=("get_design_estimate" "get_operate_variables")
+TS_BASE_RESAMPLE_NUM_YEARS=1
+TS_REDUCTION_NUM_DAYS=10
 
 
 # Simulations
@@ -29,7 +28,6 @@ do
             python3 main.py \
                     --simulation_name $SIMULATION_NAME \
                     --simulation_type $SIMULATION_TYPE \
-                    --extra_config_name $EXTRA_CONFIG_NAME \
                     --ts_base_resample_num_years $TS_BASE_RESAMPLE_NUM_YEARS \
                     --ts_reduction_num_days $TS_REDUCTION_NUM_DAYS \
                     --replication $REPLICATION

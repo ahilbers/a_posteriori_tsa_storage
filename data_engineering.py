@@ -51,7 +51,6 @@ def get_simulation_id(run_config: dict) -> str:
 
     simulation_name = run_config['simulation']['name']
     simulation_type = run_config['simulation']['type']
-    extra_config_name = run_config['simulation']['extra_config_name']
     ts_base_resample_num_years = run_config['ts_base']['resample_num_years']
     ts_agg_num_days = run_config['ts_aggregation']['num_days']
     ts_agg_num_days_extreme = run_config['ts_aggregation']['num_days_extreme']
@@ -62,23 +61,16 @@ def get_simulation_id(run_config: dict) -> str:
         'get_design_estimate': 'get_ds',
         'get_operate_variables': 'get_op'
     }
-    extra_config_name_dict = {
-        'main': 'main',
-        'storage_none': 'no_sto',
-        'storage_high_cost': 'sto_h',
-        'storage_medium_cost': 'sto_m'
-    }
     simulation_name_str = simulation_name
     simulation_type_str = simulation_type_dict[simulation_type]
-    extra_config_name_str = extra_config_name_dict[extra_config_name]
     resample_num_years_str = (
         f'{ts_base_resample_num_years:02d}y' if ts_base_resample_num_years is not None else 'base'
     )
     replication_str = f'{replication:04d}'
 
     # Construct simulation id
-    base_info = f'{simulation_name_str}--{extra_config_name_str}--{resample_num_years_str}'
-    if simulation_name in ['benchmark', 'year']:
+    base_info = f'{simulation_name_str}--{resample_num_years_str}'
+    if simulation_name == 'benchmark':
         simulation_id = f'{base_info}--{replication_str}--{simulation_type_str}'
     elif 'agg' in simulation_name:
         ts_agg_num_days_str = f'{ts_agg_num_days:04d}d'

@@ -253,7 +253,7 @@ techs:
             # storage_initial: value >0 cause bugs for inter-/intraday storage levels
         costs:
             monetary:
-                storage_cap: 10.002  # GBP per KWh
+                storage_cap: 1.002  # GBP per KWh
                 interest_rate: 0
     storage_region5:
         essentials:
@@ -269,7 +269,7 @@ techs:
             # storage_initial: value >0 cause bugs for inter-/intraday storage levels
         costs:
             monetary:
-                storage_cap: 10.005  # GBP per KWh
+                storage_cap: 1.005  # GBP per KWh
                 interest_rate: 0
     storage_region6:
         essentials:
@@ -285,7 +285,7 @@ techs:
             # storage_initial: value >0 cause bugs for inter-/intraday storage levels
         costs:
             monetary:
-                storage_cap: 10.006  # GBP per KWh
+                storage_cap: 1.006  # GBP per KWh
                 interest_rate: 0
 
     # Unmet demand, considered as generation technology with no install but high generation cost

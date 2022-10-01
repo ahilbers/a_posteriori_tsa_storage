@@ -115,18 +115,3 @@ overrides:
                     how: 'mean'  # 'mean' or 'closest'
                     scale_clusters: null  # do not rescale representative days after clustering
                     # k: 1  # used when clustering_func!=file, can override via extra_override_dict
-    storage_none:
-        locations.region2.techs.storage_region2.constraints.storage_cap_equals: 0
-        locations.region2.techs.storage_region2.constraints.energy_cap_equals: 0
-        locations.region5.techs.storage_region5.constraints.storage_cap_equals: 0
-        locations.region5.techs.storage_region5.constraints.energy_cap_equals: 0
-        locations.region6.techs.storage_region6.constraints.storage_cap_equals: 0
-        locations.region6.techs.storage_region6.constraints.energy_cap_equals: 0
-    storage_high_cost:
-        techs.storage_region2.costs.monetary.storage_cap: 10  # GBP per KWh
-        techs.storage_region5.costs.monetary.storage_cap: 10  # GBP per KWh
-        techs.storage_region6.costs.monetary.storage_cap: 10  # GBP per KWh
-    storage_medium_cost:
-        techs.storage_region2.costs.monetary.storage_cap: 1  # GBP per KWh
-        techs.storage_region5.costs.monetary.storage_cap: 1  # GBP per KWh
-        techs.storage_region6.costs.monetary.storage_cap: 1  # GBP per KWh
