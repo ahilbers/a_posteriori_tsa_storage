@@ -5,7 +5,7 @@
 
 ## Summary
 
-This repository contains data, model files and example code for the paper *A posteriori time series aggregation for energy system planning models with storage*.
+This repository contains data, model files and example code for the paper *Reducing climate risk in energy system planning: a posteriori time series aggregation for models with storage*.
 
 <!-- This repository contains data, model files and example code for the paper [*Importance subsampling for power system planning under multi-year demand and weather variability*](https://ieeexplore.ieee.org/abstract/document/9183591) (2020) (publicly available version [here](https://arxiv.org/abs/2008.10300)). -->
 
