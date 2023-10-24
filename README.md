@@ -15,7 +15,7 @@ This repository contains data, model files and example code for the paper *A pos
 ## Entry point
 
 A single bash script runs all simulations in the paper, post-processes the results and generates
-the figures. To run it, call
+the figures. To run it on Linux or Mac OS, call
 
 ```
 sh scripts/main.sh
@@ -49,14 +49,14 @@ In this repo, this code is structured to run all simulations in series. However,
 
 Running the code in this repo requires two things: some `python` packages and a solver for the optimisation problem. For a very quick way to install these, follow the `Requirements & installation` instructions for [this repo](https://github.com/ahilbers/renewable_test_PSMs/#requirements-&-installation), as it has the same dependencies. Otherwise, install the following:
 - Python modules:
-  - `Calliope 0.6.7`: A (fully open-source) energy system model generator. See [this link](https://calliope.readthedocs.io/en/stable/user/installation.html) for installation. **See note below for additional requirement**.
+  - `Calliope 0.6.10`: A (fully open-source) energy system model generator. See [this link](https://calliope.readthedocs.io/en/stable/user/installation.html) for installation. If the conda install takes a long time, you can also use `pip install calliope`.
   - `numpy` (`pip install numpy`)
   - `pandas` (`pip install pandas`)
+  - `matplotlib` (`pip install matplotlib`)
   - `yaml` (`pip install pyyaml`)
   - `sklearn` (`pip install scikit-learn`)
 - Other:
   - `cbc`: open-source optimiser: see [this link](https://projects.coin-or.org/Cbc) for installation. Other solvers (e.g. `gurobi`) are also possible -- the solver can be specified in `model_files/model.yaml`.
-- **Extra**: The current Calliope implementation can lead to errors due to floating point storage levels around zero, as detailed [here](https://github.com/calliope-project/calliope/issues/379). To avoid this change, implement [this pull request](https://github.com/calliope-project/calliope/pull/380). You can do this yourself by changing [this line](https://github.com/calliope-project/calliope/pull/380/files) in the file `{YOUR_PATH_TO_CALLIOPE_PACKAGE}/calliope/backend/run.py`.
 
 
 

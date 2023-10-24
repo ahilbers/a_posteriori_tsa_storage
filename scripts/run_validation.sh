@@ -40,23 +40,23 @@ do
 done
 
 
-# # Simulations, 120 representative days
-# # ------------------------------------
-# for SIMULATION_NAME in "${SIMULATION_NAME_LIST[@]}"
-# do
-#     for SIMULATION_TYPE in "${SIMULATION_TYPE_LIST[@]}"
-#     do
-#         for REPLICATION in {0..1}
-#         do
-#             python3 main.py \
-#                     --simulation_name $SIMULATION_NAME \
-#                     --simulation_type $SIMULATION_TYPE \
-#                     --ts_base_resample_num_years $TS_BASE_RESAMPLE_NUM_YEARS \
-#                     --ts_reduction_num_days 120 \
-#                     --replication $REPLICATION
-#             printf "\n\n"
-#         done
-#     done
-# done
+# Simulations, 120 representative days
+# ------------------------------------
+for SIMULATION_NAME in "${SIMULATION_NAME_LIST[@]}"
+do
+    for SIMULATION_TYPE in "${SIMULATION_TYPE_LIST[@]}"
+    do
+        for REPLICATION in {0..1}
+        do
+            python3 main.py \
+                    --simulation_name $SIMULATION_NAME \
+                    --simulation_type $SIMULATION_TYPE \
+                    --ts_base_resample_num_years $TS_BASE_RESAMPLE_NUM_YEARS \
+                    --ts_reduction_num_days 120 \
+                    --replication $REPLICATION
+            printf "\n\n"
+        done
+    done
+done
 
 
