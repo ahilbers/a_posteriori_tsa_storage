@@ -65,7 +65,7 @@ Running the code in this repo requires two things: some `python` packages and a 
 
 If you use this repository for further research, please cite the following papers:
 
-- AP Hilbers, DJ Brayshaw, A Gandy. A posteriori time series aggregation for energy system planning models with storage (to appear).
+- AP Hilbers, DJ Brayshaw, A Gandy (2023). Reducing climate risk in energy system planning: a posteriori time series aggregation for models with storage. *Applied Energy*, 334, 120624.
 
 
 
