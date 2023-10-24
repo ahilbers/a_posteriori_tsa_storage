@@ -5,7 +5,7 @@
 
 ## Summary
 
-This repository contains data, model files and example code for the paper *A posteriori time series aggregation for energy system planning models with storage*.
+This repository contains data, model files and example code for the paper *Reducing climate risk in energy system planning: a posteriori time series aggregation for models with storage*.
 
 <!-- This repository contains data, model files and example code for the paper [*Importance subsampling for power system planning under multi-year demand and weather variability*](https://ieeexplore.ieee.org/abstract/document/9183591) (2020) (publicly available version [here](https://arxiv.org/abs/2008.10300)). -->
 
@@ -84,6 +84,6 @@ Models are constructed in the modelling framework `Calliope`, created by Stefan 
 
 The demand and wind dataset is based on work by Hannah Bloomfield et al. Details can be found in the following paper and dataset:
 
-- Bloomfield, H. C., Brayshaw, D. J. and Charlton-Perez, A. (2019) Characterising the winter meteorological drivers of the European electricity system using Targeted Circulation Types. Meteorological Applications. ISSN 1469-8080 (In Press). doi:[10.1002/met.1858](https://doi.org/10.1002/met.1858)
+- Bloomfield, H. C., Brayshaw, D. J. and Charlton-Perez, A. (2019) Characterising the winter meteorological drivers of the European electricity system using Targeted Circulation Types. Meteorological Applications. ISSN 1469-8080. doi:[10.1002/met.1858](https://doi.org/10.1002/met.1858)
 
 - HC Bloomfield, DJ Brayshaw, A Charlton-Perez (2020). MERRA2 derived time series of European country-aggregate electricity demand, wind power generation and solar power generation. University of Reading. Dataset. doi:[10.17864/1947.239](https://doi.org/10.17864/1947.239)
